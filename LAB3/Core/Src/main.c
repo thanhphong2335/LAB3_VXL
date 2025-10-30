@@ -19,8 +19,9 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "timer.h"
 #include "button.h"
+#include "timer.h"
+#include "fsm_traffic.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -98,7 +99,7 @@ int main(void)
   setTimer(0, 1000);
   while (1)
   {
-
+	  fsm_traffic_light();
 
     /* USER CODE END WHILE */
 
@@ -202,12 +203,12 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, LED0_Pin|LED1_Pin|LED2_Pin|LED3_Pin
-                          |LED4_Pin|LED5_Pin|LED6_Pin, GPIO_PIN_RESET);
+                          |LED4_Pin|LED5_Pin|LED6_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, EN1_Pin|EN2_Pin|LED_RED_A_Pin|LED_YELLOW_A_Pin
                           |LED_GREEN_A_Pin|LED_RED_B_Pin|LED_YELLOW_B_Pin|LED_GREEN_B_Pin
-                          |EN3_Pin, GPIO_PIN_RESET);
+                          |EN3_Pin|LED6_B_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pins : BUTTON_1_Pin BUTTON_2_Pin BUTTON_3_Pin */
   GPIO_InitStruct.Pin = BUTTON_1_Pin|BUTTON_2_Pin|BUTTON_3_Pin;
@@ -232,10 +233,10 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : EN1_Pin EN2_Pin LED_RED_A_Pin LED_YELLOW_A_Pin
                            LED_GREEN_A_Pin LED_RED_B_Pin LED_YELLOW_B_Pin LED_GREEN_B_Pin
-                           EN3_Pin */
+                           EN3_Pin LED6_B_Pin */
   GPIO_InitStruct.Pin = EN1_Pin|EN2_Pin|LED_RED_A_Pin|LED_YELLOW_A_Pin
                           |LED_GREEN_A_Pin|LED_RED_B_Pin|LED_YELLOW_B_Pin|LED_GREEN_B_Pin
-                          |EN3_Pin;
+                          |EN3_Pin|LED6_B_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

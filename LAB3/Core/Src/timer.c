@@ -14,7 +14,8 @@
 
 int timer_counter[MAX_TIMER];
 int timer_flag[MAX_TIMER];
-int TIMER_CYCLE=10;
+int TIMER_CYCLE=10; //thay chu kì ngắt của timer là 1 hay 100 cũng không thay đổi s vì chỉ tăng hoặc giảm số lần gọi timerrun
+
 void init_timer_system(void){
     for (int i = 0; i < MAX_TIMER; i++){
         timer_counter[i] = 0;

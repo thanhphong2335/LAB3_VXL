@@ -1,0 +1,65 @@
+/*
+ * fsm_traffic.c
+ *
+ *  Created on: Oct 31, 2025
+ *      Author: Thanh Phong
+ */
+
+#include "input_processing.h"
+#include "main.h"
+#include "input_reading.h"
+#include "timer.h"
+
+int mode=1;
+void fsm_traffic_light(void){
+    switch(mode){
+        case 1:
+            // LED0 sáng (tượng trưng cho đèn đỏ)
+            HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_SET);
+
+            // Nhấn nút MODE (button 0) → chuyển sang mode 2
+            if(is_button_pressed(0)){
+                mode = 2;
+            }
+            break;
+
+        case 2:
+            // LED1 sáng (đèn vàng)
+            HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_SET);
+
+            if(is_button_pressed(0)){
+                mode = 3;
+            }
+            break;
+
+        case 3:
+            // LED2 sáng (đèn xanh)
+            HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_RESET);
+
+            if(is_button_pressed(0)){
+                mode = 4;
+            }
+            break;
+
+        case 4:
+            // Tất cả tắt
+            HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_SET);
+
+            if(is_button_pressed(0)){
+                mode = 1; // Quay lại mode 1
+            }
+            break;
+
+        default:
+            mode = 1;
+            break;
+    }
+}

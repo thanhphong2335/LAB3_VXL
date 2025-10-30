@@ -8,7 +8,7 @@
  #include "main.h"
  //we aim to work with more than one buttons
 
- #define N0_OF_BUTTONS 1
+ #define N0_OF_BUTTONS 3
 
  //timer interrupt duration is 10ms, so to pass 1 second,
  //we need to jump to the interrupt service routine 100 time
@@ -42,13 +42,12 @@
 			 buttonBuffer[i] = debounceButtonBuffer1[i];
 		 if(buttonBuffer[i] == BUTTON_IS_PRESSED){
 		 //if a button is pressed, we start counting
-			 if(counterForButtonPress1s[i] < DURATION_FOR_AUTO_INCREASING){
-				 counterForButtonPress1s[i]++;
-			 } else {
-			 //the flag is turned on when 1 second has passed
-			 //since the button is pressed.
-			 flagForButtonPress1s[i] = 1;
-			 //todo
+			 if(counterForButtonPress1s[i] < DURATION_FOR_AUTO_INCREASING){counterForButtonPress1s[i]++;}
+			 else {
+				 //the flag is turned on when 1 second has passed
+				 //since the button is pressed.
+				 flagForButtonPress1s[i] = 1;
+				 //todo
 			 }
 		 } else {
 			 counterForButtonPress1s[i] = 0;

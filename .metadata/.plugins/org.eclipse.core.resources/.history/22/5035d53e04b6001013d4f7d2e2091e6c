@@ -6,17 +6,10 @@
  */
 
 #include "manual.h"
-#include "global.h"
 int temp_red=1;
 int temp_green=1;
 int temp_yellow=1;
 void fsm_manual_run(){
-	if(isbuttonpressed(0)){
-		if(status == INIT || (status >= AUTO_RED_GREEN && status <= AUTO_YELLOW_RED)){
-			status=MAN_RED;
-		}
-	}
-
 	switch(status){
 		case MAN_RED:
 			updateLEDBuffer(2, temp_red);

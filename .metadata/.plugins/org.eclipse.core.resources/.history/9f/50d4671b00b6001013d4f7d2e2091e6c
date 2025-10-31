@@ -28,7 +28,6 @@ extern int counter1;
 extern int counter2;
 
 extern int time_red;
-extern int time_yellow;
 extern int time_green;
 
 

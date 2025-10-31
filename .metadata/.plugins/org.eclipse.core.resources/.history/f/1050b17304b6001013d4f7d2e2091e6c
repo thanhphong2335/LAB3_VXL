@@ -12,7 +12,7 @@ int temp_green=1;
 int temp_yellow=1;
 void fsm_manual_run(){
 	if(isbuttonpressed(0)){
-		if(status == INIT || (status >= AUTO_RED_GREEN && status <= AUTO_YELLOW_RED)){
+		if(status == INIT || (status >= AUTO_RED_GREEN && status <= AUTO_AMBER_RED)){
 			status=MAN_RED;
 		}
 	}

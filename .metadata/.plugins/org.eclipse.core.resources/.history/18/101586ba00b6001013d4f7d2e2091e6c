@@ -6,28 +6,22 @@
  */
 
 #include "manual.h"
-#include "global.h"
 int temp_red=1;
 int temp_green=1;
 int temp_yellow=1;
 void fsm_manual_run(){
-	if(isbuttonpressed(0)){
-		if(status == INIT || (status >= AUTO_RED_GREEN && status <= AUTO_YELLOW_RED)){
-			status=MAN_RED;
-		}
-	}
-
 	switch(status){
 		case MAN_RED:
 			updateLEDBuffer(2, temp_red);
 			turnoffled();
-			if(isbuttonpressed(0)){
-				status=MAN_GREEN;
+			if(timer_flag[4]){
+				status=AUTO_RED_GREEN;
+				setTimer(1,5000);
 			}
 			if(isbuttonpressed(1)){
 				temp_red++;
 			}
-			if(isbuttonpressed(2)){
+			if(is_button_pressed(2)){
 				time_red=temp_red;
 			}
 			if(isTimerExpired(4)){
@@ -39,14 +33,14 @@ void fsm_manual_run(){
 		case MAN_GREEN:
 			updateLEDBuffer(3, temp_green);
 			turnoffled();
-			if(isbuttonpressed(0)){
-				status=MAN_YELLOW;
+			if(timer_flag[4]){
+				status=AUTO_GREEN_RED;
+				setTimer(1,5000);
 			}
 			if(isbuttonpressed(1)){
-				status=MAN_YELLOW;
 				temp_green++;
 			}
-			if(isbuttonpressed(2)){
+			if(is_button_pressed(2)){
 				time_green=temp_green;
 			}
 			if(isTimerExpired(4)){
@@ -58,14 +52,14 @@ void fsm_manual_run(){
 		case MAN_YELLOW:
 			updateLEDBuffer(4, temp_green);
 			turnoffled();
-			if(isbuttonpressed(0)){
-				status=AUTO_RED_GREEN;
+			if(timer_flag[4]){
+				status=AUTO_YELLOW;
+				setTimer(1,5000);
 			}
 			if(isbuttonpressed(1)){
-
 				temp_yellow++;
 			}
-			if(isbuttonpressed(2)){
+			if(is_button_pressed(2)){
 				time_yellow=temp_yellow;
 			}
 			if(isTimerExpired(4)){

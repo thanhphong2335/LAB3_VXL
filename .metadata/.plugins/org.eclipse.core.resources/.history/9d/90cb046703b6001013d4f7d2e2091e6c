@@ -19,7 +19,6 @@ void fsm_automatic_run() {
     switch (status) {
         case INIT:
             // Khởi tạo: Tắt tất cả các LED và thiết lập thời gian cho các đèn
-
             turnoffled();  // Hàm tắt tất cả các LED
             counter0 = time_red;
             counter1 = time_green;
@@ -29,7 +28,9 @@ void fsm_automatic_run() {
             break;
 
         case AUTO_RED_GREEN:
-
+        	if(isbuttonpressed(0)==1){
+        					status=MAN_GREEN;
+        				}
             setred(0);
             setgreen(1);
 
@@ -54,7 +55,9 @@ void fsm_automatic_run() {
             break;
 
         case AUTO_RED_YELLOW:
-
+        	if(isbuttonpressed(0)==1){
+        					status=MAN_GREEN;
+        				}
             // Chế độ đèn vàng sáng trên cả hai đường
             setred(0);  // Đèn đỏ tắt
 
@@ -77,7 +80,9 @@ void fsm_automatic_run() {
             break;
 
         case AUTO_GREEN_RED:
-
+        	if(isbuttonpressed(0)==1){
+        					status=MAN_GREEN;
+        				}
             // Chế độ đèn xanh đường A và đèn đỏ đường B sáng
             setred(1);  // Đèn đỏ đường A sáng
             setgreen(0);  // Đèn xanh đường A sáng
@@ -102,7 +107,9 @@ void fsm_automatic_run() {
             }
             break;
         case AUTO_YELLOW_RED:
-
+        	if(isbuttonpressed(0)==1){
+        					status=MAN_GREEN;
+        				}
 			setyellow(0);
 			setred(1);
 

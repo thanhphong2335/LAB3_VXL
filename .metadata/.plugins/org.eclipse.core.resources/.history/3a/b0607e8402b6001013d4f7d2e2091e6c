@@ -100,10 +100,9 @@ int main(void)
   updateLEDBuffer(time_red,time_green);
   while (1)
   {
-	  //fsm_automatic_run();
+	  fsm_automatic_run();
 	  printled();
 	  fsm_manual_run();
-	  getKeyInput();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

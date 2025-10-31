@@ -112,27 +112,28 @@ int main(void)
 	  		  else if (status == MAN_RED) {
 	  			  status = MAN_YELLOW;
 	  			  turnoffled();
-	  			setTimer(4, 500);
+	  			  setTimer(4, 500);
 	  			  updateLEDBuffer(3, temp_yellow);
 	  		  }
 	  		  else if (status == MAN_YELLOW) {
 	  			  status = MAN_GREEN;
 	  			  turnoffled();
-	  			setTimer(4, 500);
+	  			  setTimer(4, 500);
 	  			  updateLEDBuffer(4, temp_green);
 	  		  }
-	  		  else if (status == MAN_GREEN) {
+	  		  else if (status == MAN_GREEN){
+
 	  			  status = INIT;
 	  			  turnoffled();
 	  		  }
 	  	  }
-
-	  	  if (status == INIT || (status >= AUTO_RED_GREEN && status <= AUTO_YELLOW_RED)) {
+	  	  if (status == INIT || (status >= AUTO_RED_GREEN && status <= AUTO_YELLOW_RED)){
 	  		  fsm_automatic_run();
 	  	  }
-	  	  else if (status >= MAN_RED && status <= MAN_GREEN) {
+	  	  else if (status >= MAN_RED && status <= MAN_GREEN){
 	  		  fsm_manual_run();
 	  	  }
+	  //fsm_traffic_light();
 	  printled();
 
     /* USER CODE END WHILE */

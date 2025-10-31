@@ -55,11 +55,12 @@ void getKeyInput() {
                     timerforkeypress[i] = 200; // ~2s nếu timer 10ms
                 } else {
                     // Khi nhả ra
-                    if(timerforkeypress[i] > 0) {
+                    if(timerforkeypress[i] > 0 && button_long_flag[i] == 0) {
                         // Nhả ra trước khi hết 2s → là nhấn ngắn
                         button_flag[i] = 1;
                     }
                     timerforkeypress[i] = 0;
+                    button_long_flag[i] = 0;
                 }
             } else {
                 // Nếu đang giữ nút

@@ -8,5 +8,9 @@
  */
 
 #include "global.h"
-
+#include "manual.h"
 int status = 0;
+
+void check(){
+	temp_red=temp_green+temp_yellow;
+}

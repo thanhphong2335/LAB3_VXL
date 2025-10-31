@@ -21,7 +21,7 @@
 #define MAN_RED 12
 #define MAN_YELLOW 13
 #define MAN_GREEN 14
-
+#define CROSS 15
 extern int status;
 
 extern int counter1;
@@ -31,5 +31,6 @@ extern int time_red;
 extern int time_yellow;
 extern int time_green;
 
+void check();
 
 #endif /* INC_GLOBAL_H_ */

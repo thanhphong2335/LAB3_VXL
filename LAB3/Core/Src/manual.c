@@ -7,20 +7,15 @@
 
 #include "manual.h"
 #include "global.h"
-int temp_red=1;
-int temp_green=1;
-int temp_yellow=1;
+#include "automatic.h"
+int temp_red = 1;
+int temp_green = 1;
+int temp_yellow = 1;
 void fsm_manual_run(){
-	if(isbuttonpressed(0)){
-		if(status == INIT || (status >= AUTO_RED_GREEN && status <= AUTO_YELLOW_RED)){
-			status=MAN_RED;
-		}
-	}
-
 	switch(status){
 		case MAN_RED:
 			updateLEDBuffer(2, temp_red);
-			turnoffled();
+
 			if(isbuttonpressed(0)){
 				status=MAN_GREEN;
 			}
@@ -28,7 +23,15 @@ void fsm_manual_run(){
 				temp_red++;
 			}
 			if(isbuttonpressed(2)){
-				time_red=temp_red;
+				time_red = temp_red;
+				    time_green = temp_green;
+				    time_yellow = temp_yellow;
+				    status = INIT;       // quay lại AUTO
+				    counter0 = time_red;
+				    counter1 = time_green;
+				    setTimer(0, 1000);
+				    setTimer(1, counter1*1000);
+				    updateLEDBuffer(counter0, counter1);
 			}
 			if(isTimerExpired(4)){
 				HAL_GPIO_TogglePin(LED_RED_A_GPIO_Port, LED_RED_A_Pin);
@@ -38,7 +41,7 @@ void fsm_manual_run(){
 			break;
 		case MAN_GREEN:
 			updateLEDBuffer(3, temp_green);
-			turnoffled();
+
 			if(isbuttonpressed(0)){
 				status=MAN_YELLOW;
 			}
@@ -47,7 +50,15 @@ void fsm_manual_run(){
 				temp_green++;
 			}
 			if(isbuttonpressed(2)){
-				time_green=temp_green;
+				time_red = temp_red;
+				    time_green = temp_green;
+				    time_yellow = temp_yellow;
+				    status = INIT;       // quay lại AUTO
+				    counter0 = time_red;
+				    counter1 = time_green;
+				    setTimer(0, 1000);
+				    setTimer(1, counter1*1000);
+				    updateLEDBuffer(counter0, counter1);
 			}
 			if(isTimerExpired(4)){
 				HAL_GPIO_TogglePin(LED_GREEN_A_GPIO_Port, LED_GREEN_A_Pin);
@@ -57,7 +68,7 @@ void fsm_manual_run(){
 			break;
 		case MAN_YELLOW:
 			updateLEDBuffer(4, temp_green);
-			turnoffled();
+
 			if(isbuttonpressed(0)){
 				status=AUTO_RED_GREEN;
 			}
@@ -66,7 +77,15 @@ void fsm_manual_run(){
 				temp_yellow++;
 			}
 			if(isbuttonpressed(2)){
-				time_yellow=temp_yellow;
+				time_red = temp_red;
+				    time_green = temp_green;
+				    time_yellow = temp_yellow;
+				    status = INIT;       // quay lại AUTO
+				    counter0 = time_red;
+				    counter1 = time_green;
+				    setTimer(0, 1000);
+				    setTimer(1, counter1*1000);
+				    updateLEDBuffer(counter0, counter1);
 			}
 			if(isTimerExpired(4)){
 				HAL_GPIO_TogglePin(LED_YELLOW_A_GPIO_Port, LED_YELLOW_A_Pin);

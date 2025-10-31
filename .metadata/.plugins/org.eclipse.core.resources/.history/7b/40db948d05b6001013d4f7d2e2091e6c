@@ -1,0 +1,80 @@
+/*
+ * manual.c
+ *
+ *  Created on: Oct 31, 2025
+ *      Author: Thanh Phong
+ */
+
+#include "manual.h"
+#include "global.h"
+int temp_red=1;
+int temp_green=1;
+int temp_yellow=1;
+void fsm_manual_run(){
+	if(isbuttonpressed(0)){
+		if(status == INIT || (status >= AUTO_RED_GREEN && status <= AUTO_YELLOW_RED)){
+			status=MAN_RED;
+		}
+	}
+
+	switch(status){
+		case MAN_RED:
+			updateLEDBuffer(2, temp_red);
+			turnoffled();
+			if(isbuttonpressed(0)){
+				status=MAN_GREEN;
+			}
+			if(isbuttonpressed(1)){
+				temp_red++;
+			}
+			if(isbuttonpressed(2)){
+				time_red=temp_red;
+			}
+			if(isTimerExpired(4)){
+				HAL_GPIO_TogglePin(LED_RED_A_GPIO_Port, LED_RED_A_Pin);
+				HAL_GPIO_TogglePin(LED_RED_B_GPIO_Port, LED_RED_B_Pin);
+				setTimer(4, 500);
+			}
+			break;
+		case MAN_GREEN:
+			updateLEDBuffer(3, temp_green);
+			turnoffled();
+			if(isbuttonpressed(0)){
+				status=MAN_YELLOW;
+			}
+			if(isbuttonpressed(1)){
+				status=MAN_YELLOW;
+				temp_green++;
+			}
+			if(isbuttonpressed(2)){
+				time_green=temp_green;
+			}
+			if(isTimerExpired(4)){
+				HAL_GPIO_TogglePin(LED_GREEN_A_GPIO_Port, LED_GREEN_A_Pin);
+				HAL_GPIO_TogglePin(LED_GREEN_B_GPIO_Port, LED_GREEN_B_Pin);
+				setTimer(4, 500);
+			}
+			break;
+		case MAN_YELLOW:
+			updateLEDBuffer(4, temp_green);
+			turnoffled();
+			if(isbuttonpressed(0)){
+				status=AUTO_RED_GREEN;
+			}
+			if(isbuttonpressed(1)){
+
+				temp_yellow++;
+			}
+			if(isbuttonpressed(2)){
+				time_yellow=temp_yellow;
+			}
+			if(isTimerExpired(4)){
+				HAL_GPIO_TogglePin(LED_YELLOW_A_GPIO_Port, LED_YELLOW_A_Pin);
+				HAL_GPIO_TogglePin(LED_YELLOW_B_GPIO_Port, LED_YELLOW_B_Pin);
+				setTimer(4, 500);
+			}
+			break;
+		default:
+			break;
+		}
+}

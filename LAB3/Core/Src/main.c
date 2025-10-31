@@ -20,6 +20,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "automatic.h"
+#include "manual.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -100,10 +101,40 @@ int main(void)
   updateLEDBuffer(time_red,time_green);
   while (1)
   {
-	  //fsm_automatic_run();
+
+	  if (isbuttonpressed(0) == 1) {
+	  		  if (status == INIT || (status >= AUTO_RED_GREEN && status <= AUTO_YELLOW_RED)) {
+	  			  status = MAN_RED;
+	  			  turnoffled();
+	  			  setTimer(4, 500);
+	  			  updateLEDBuffer(2, temp_red);
+	  		  }
+	  		  else if (status == MAN_RED) {
+	  			  status = MAN_YELLOW;
+	  			  turnoffled();
+	  			setTimer(4, 500);
+	  			  updateLEDBuffer(3, temp_yellow);
+	  		  }
+	  		  else if (status == MAN_YELLOW) {
+	  			  status = MAN_GREEN;
+	  			  turnoffled();
+	  			setTimer(4, 500);
+	  			  updateLEDBuffer(4, temp_green);
+	  		  }
+	  		  else if (status == MAN_GREEN) {
+	  			  status = INIT;
+	  			  turnoffled();
+	  		  }
+	  	  }
+
+	  	  if (status == INIT || (status >= AUTO_RED_GREEN && status <= AUTO_YELLOW_RED)) {
+	  		  fsm_automatic_run();
+	  	  }
+	  	  else if (status >= MAN_RED && status <= MAN_GREEN) {
+	  		  fsm_manual_run();
+	  	  }
 	  printled();
-	  fsm_manual_run();
-	  getKeyInput();
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

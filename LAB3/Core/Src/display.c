@@ -4,10 +4,7 @@
  *  Created on: Oct 30, 2025
  *      Author: Thanh Phong
  */
-
-#include "main.h"
-#include "timer.h"
-
+#include "display.h"
 const int MAX_LED = 4;
 int index_led = 0;
 int led_buffer[4] = {1, 2, 3, 4};
@@ -21,21 +18,26 @@ void update7SEG(int index){
 		 HAL_GPIO_WritePin(EN0_GPIO_Port,EN0_Pin,GPIO_PIN_RESET);
 		 display7SEG(led_buffer[0]);
 
+
 	 break;
 	 case 1:
 		 HAL_GPIO_WritePin(EN1_GPIO_Port,EN1_Pin,GPIO_PIN_RESET);
 		 display7SEG(led_buffer[1]);
+
 	 break;
 	 case 2:
 		 HAL_GPIO_WritePin(EN2_GPIO_Port,EN2_Pin,GPIO_PIN_RESET);
 		 display7SEG(led_buffer[2]);
+
 	 break;
 	 case 3:
 		 HAL_GPIO_WritePin(EN3_GPIO_Port,EN3_Pin,GPIO_PIN_RESET);
 		 display7SEG(led_buffer[3]);
+
 	 break;
 	 default:
 	 break;
+
 	 }
 }
 
@@ -130,48 +132,70 @@ void display7SEG(int num) {
 		}
 
 
-void updateDisplay(int mode, int current_state, int tA, int tB, int temp_time, int editing_road, int blink_flag){
-    // editing_road: 0 = none, 1 = roadA, 2 = roadB (tùy bạn định nghĩa)
-    // blink_flag: 0 or 1 (được cập nhật bởi timer blink 500ms)
 
-    if(mode == 1){ // NORMAL
-        // Hiển thị thời gian còn lại của 2 đường (road A / road B)
-        led_buffer[0] = (tA / 10) % 10;
-        led_buffer[1] = tA % 10;
-        led_buffer[2] = (tB / 10) % 10;
-        led_buffer[3] = tB % 10;
-    } else {
-        // Chế độ MODIFY: hiển thị temp_time trên đường đang chỉnh
-        // và hiển thị các giá trị hiện hành cho đường kia
-        if(editing_road == 1){ // chỉnh road A
-            if(blink_flag){
-                led_buffer[0] = (temp_time / 10) % 10;
-                led_buffer[1] = temp_time % 10;
-            } else {
-                // khi blink off, có thể hiển thị blank hoặc giữ cũ; blank bằng 0xF (không hiển thị)
-                led_buffer[0] = 0xF; // bạn cần implement display7SEG để 0xF = tắt
-                led_buffer[1] = 0xF;
-            }
-            // Road B hiển thị bình thường
-            led_buffer[2] = (tB / 10) % 10;
-            led_buffer[3] = tB % 10;
-        } else if(editing_road == 2){ // chỉnh road B
-            // Road A hiển thị bình thường
-            led_buffer[0] = (tA / 10) % 10;
-            led_buffer[1] = tA % 10;
-            if(blink_flag){
-                led_buffer[2] = (temp_time / 10) % 10;
-                led_buffer[3] = temp_time % 10;
-            } else {
-                led_buffer[2] = 0xF;
-                led_buffer[3] = 0xF;
-            }
-        } else {
-            // Nếu không chỉ rõ road, fallback: hiển thị current times
-            led_buffer[0] = (tA / 10) % 10;
-            led_buffer[1] = tA % 10;
-            led_buffer[2] = (tB / 10) % 10;
-            led_buffer[3] = tB % 10;
-        }
-    }
+void updateLEDBuffer(int time1, int time2) {
+	if(time1 < 0) time1 = 0;
+	    if(time2 < 0) time2 = 0;
+    led_buffer[0] = time1 / 10;
+    led_buffer[1] = time1 % 10;
+    led_buffer[2] = time2 / 10;
+    led_buffer[3] = time2 % 10;
+}
+void turnoffled(){
+	HAL_GPIO_WritePin(LED_RED_A_GPIO_Port, LED_RED_A_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_YELLOW_A_GPIO_Port, LED_YELLOW_A_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_GREEN_A_GPIO_Port, LED_GREEN_A_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_RED_B_GPIO_Port, LED_RED_B_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_YELLOW_B_GPIO_Port, LED_RED_B_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_GREEN_B_GPIO_Port,LED_RED_B_Pin, GPIO_PIN_SET);
+}
+//road A=0 road B =1
+void setred(int road){
+	if(road ==0){
+		HAL_GPIO_WritePin(LED_RED_A_GPIO_Port, LED_RED_A_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LED_YELLOW_A_GPIO_Port, LED_YELLOW_A_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LED_GREEN_A_GPIO_Port, LED_GREEN_A_Pin, GPIO_PIN_SET);
+	}
+	if(road ==1){
+		HAL_GPIO_WritePin(LED_RED_B_GPIO_Port, LED_RED_B_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LED_YELLOW_B_GPIO_Port, LED_YELLOW_B_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LED_GREEN_B_GPIO_Port,LED_GREEN_B_Pin, GPIO_PIN_SET);
+	}
+}
+
+
+void setgreen(int road){
+	if(road ==0){
+		HAL_GPIO_WritePin(LED_RED_A_GPIO_Port, LED_RED_A_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LED_YELLOW_A_GPIO_Port, LED_YELLOW_A_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LED_GREEN_A_GPIO_Port, LED_GREEN_A_Pin, GPIO_PIN_RESET);
+	}
+	if(road ==1){
+		HAL_GPIO_WritePin(LED_RED_B_GPIO_Port, LED_RED_B_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LED_YELLOW_B_GPIO_Port, LED_YELLOW_B_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LED_GREEN_B_GPIO_Port,LED_GREEN_B_Pin, GPIO_PIN_RESET);
+	}
+}
+
+
+void setyellow(int road){
+	if(road ==0){
+		HAL_GPIO_WritePin(LED_RED_A_GPIO_Port, LED_RED_A_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LED_YELLOW_A_GPIO_Port, LED_YELLOW_A_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LED_GREEN_A_GPIO_Port, LED_GREEN_A_Pin, GPIO_PIN_SET);
+	}
+	if(road ==1){
+		HAL_GPIO_WritePin(LED_RED_B_GPIO_Port, LED_RED_B_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LED_YELLOW_B_GPIO_Port, LED_YELLOW_B_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LED_GREEN_B_GPIO_Port,LED_GREEN_B_Pin, GPIO_PIN_SET);
+	}
+}
+
+void printled(){
+	if(isTimerExpired(3)){
+		update7SEG(index_led);
+		setTimer(3, 150);
+		index_led++;
+		if (index_led >= MAX_LED) index_led = 0;
+	}
 }

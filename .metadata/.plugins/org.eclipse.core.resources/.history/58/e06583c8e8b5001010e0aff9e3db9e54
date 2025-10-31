@@ -1,0 +1,18 @@
+/*
+ * global.c
+ *
+ *  Created on: Oct 31, 2025
+ *      Author: Thanh Phong
+ *
+ *
+ */
+
+ #include "global.h"
+
+ int status= INIT;
+ extern int counter1;
+ extern int counter2;
+
+ extern int time_red;
+ extern int time_yellow;
+ extern int time_green;

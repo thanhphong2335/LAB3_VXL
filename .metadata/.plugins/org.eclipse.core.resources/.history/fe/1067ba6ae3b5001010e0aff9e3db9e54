@@ -1,0 +1,23 @@
+/*
+ * automatic.c
+ *
+ *  Created on: Oct 31, 2025
+ *      Author: Thanh Phong
+ */
+
+#include "automatic.h"
+
+void fsm_automatic_run(){
+	switch(status){
+	case INIT:
+
+		status=AUTO_RED;
+		break;
+	case AUTO_RED:
+		break;
+	case AUTO_YELLOW:
+		break;
+	case AUTO_GREEN:
+		break;
+	}
+}

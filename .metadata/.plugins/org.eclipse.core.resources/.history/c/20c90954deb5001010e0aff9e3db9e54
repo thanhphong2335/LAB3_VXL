@@ -1,0 +1,14 @@
+/*
+ * display.h
+ *
+ *  Created on: Oct 30, 2025
+ *      Author: Thanh Phong
+ */
+
+#ifndef INC_DISPLAY_H_
+#define INC_DISPLAY_H_
+
+void update7SEG(int index);
+void display7SEG(int num) ;
+extern int led_buffer[4]
+#endif /* INC_DISPLAY_H_ */

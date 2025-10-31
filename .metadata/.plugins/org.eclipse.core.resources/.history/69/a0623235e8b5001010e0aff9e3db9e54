@@ -1,0 +1,64 @@
+/*
+ * automatic.c
+ *
+ *  Created on: Oct 31, 2025
+ *      Author: Thanh Phong
+ */
+
+#include "automatic.h"
+#include "global.h"
+void fsm_automatic_run() {
+    switch (status) {
+        case INIT:
+            // Khởi tạo: Tắt tất cả các LED và thiết lập thời gian
+            turnoffled();  // Hàm tắt tất cả các LED
+            counter1 = time_red;  // Đặt thời gian đèn đỏ
+            counter2 = time_green;  // Đặt thời gian đèn xanh
+            status = AUTO_RED;  // Chuyển sang chế độ AUTO_RED
+            setTimer(1,time_red*1000);  // Đặt timer cho đèn đỏ
+            break;
+
+        case AUTO_RED:
+            // Chế độ đèn đỏ: Đèn đỏ sáng, đèn vàng và xanh tắt
+            setred(1);  // Đèn đỏ sáng
+            setgreen(0);  // Đèn xanh tắt
+            setyellow(0);  // Đèn vàng tắt
+
+            // Sau khi đếm hết thời gian đèn đỏ, chuyển sang chế độ AUTO_YELLOW
+            if (isTimerExpired(1)) {
+                setTimer(2, 2);  // Đặt timer cho đèn vàng
+                status = AUTO_YELLOW;  // Chuyển sang chế độ AUTO_YELLOW
+            }
+            break;
+
+        case AUTO_YELLOW:
+            // Chế độ đèn vàng: Đèn vàng sáng
+            setred(0);  // Đèn đỏ tắt
+            setgreen(0);  // Đèn xanh tắt
+            setyellow(1);  // Đèn vàng sáng
+
+            // Sau khi đếm hết thời gian đèn vàng, chuyển sang chế độ AUTO_GREEN
+            if (isTimerExpired(2)) {
+                setTimer(3, time_green);  // Đặt timer cho đèn xanh
+                status = AUTO_GREEN;  // Chuyển sang chế độ AUTO_GREEN
+            }
+            break;
+
+        case AUTO_GREEN:
+            // Chế độ đèn xanh: Đèn xanh sáng, đèn đỏ và vàng tắt
+            setred(0);  // Đèn đỏ tắt
+            setgreen(1);  // Đèn xanh sáng
+            setyellow(0);  // Đèn vàng tắt
+
+            // Sau khi đếm hết thời gian đèn xanh, quay lại chế độ AUTO_RED
+            if (isTimerExpired(3)) {
+                setTimer(1, time_red);  // Đặt lại timer cho đèn đỏ
+                status = AUTO_RED;  // Quay lại chế độ AUTO_RED
+            }
+            break;
+
+        default:
+            status = AUTO_RED;  // Quay lại chế độ AUTO_RED nếu có lỗi
+            break;
+    }
+}

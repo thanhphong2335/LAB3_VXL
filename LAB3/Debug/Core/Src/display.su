@@ -1,3 +1,8 @@
-display.c:14:6:update7SEG	16	static
-display.c:42:6:display7SEG	16	static
-display.c:133:6:updateDisplay	24	static
+display.c:11:6:update7SEG	16	static
+display.c:44:6:display7SEG	16	static
+display.c:136:6:updateLEDBuffer	16	static
+display.c:144:6:turnoffled	8	static
+display.c:153:6:setred	16	static
+display.c:167:6:setgreen	16	static
+display.c:181:6:setyellow	16	static
+display.c:194:6:printled	8	static

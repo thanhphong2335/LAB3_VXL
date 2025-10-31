@@ -4,6 +4,8 @@
  *  Created on: Oct 29, 2025
  *      Author: Thanh Phong
  */
+#include "main.h"
+#include "button.h"
 
 #ifndef INC_TIMER_H_
 #define INC_TIMER_H_

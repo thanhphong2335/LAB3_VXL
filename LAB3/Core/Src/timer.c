@@ -5,8 +5,7 @@
  *      Author: Thanh Phong
  */
 
- #include "main.h"
-#include "button.h"
+#include "timer.h"
 
 
 #define MAX_TIMER 10

@@ -97,10 +97,12 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   setTimer(0, 1000);
+  setTimer(1,5000);
+  setTimer(3,120);
   while (1)
   {
-	  fsm_traffic_light();
-
+	  fsm_automatic_run();
+	  printled();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

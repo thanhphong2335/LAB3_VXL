@@ -15,6 +15,7 @@ int time_green = 4;  // Thời gian đèn xanh (4 giây)
 int time_yellow = 2; // Thời gian đèn vàng (2 giây)
 
 void fsm_automatic_run() {
+
     switch (status) {
         case INIT:
             // Khởi tạo: Tắt tất cả các LED và thiết lập thời gian cho các đèn
@@ -41,7 +42,8 @@ void fsm_automatic_run() {
             // Sau khi đếm hết thời gian đèn đỏ và đèn xanh, chuyển sang chế độ AUTO_YELLOW
             if (isTimerExpired(1)) {
                 setyellow(1);
-                counter0 = time_yellow;  // Đặt lại thời gian cho đèn vàng
+                counter0 = time_red-time_green;  // Đặt lại thời gian cho đèn vàng
+                counter1 = time_yellow;
                 setTimer(1, time_yellow * 1000);  // Đặt timer cho đèn vàng
                 status = AUTO_RED_YELLOW;  // Chuyển sang chế độ AUTO_YELLOW
                 updateLEDBuffer(counter0, counter1);
@@ -87,6 +89,8 @@ void fsm_automatic_run() {
 
             // Sau khi đếm hết thời gian đèn xanh và đèn đỏ, quay lại chế độ AUTO_RED_GREEN
             if (isTimerExpired(1)) {
+            	counter0 = time_yellow;
+            	counter1 = time_red;
                 setTimer(0, 1000);  // Đặt lại timer cho đèn đỏ đường A
                 setTimer(1, time_red * 1000);  // Đặt lại timer cho đèn đỏ đường B
                 status = AUTO_YELLOW_RED;  // Quay lại chế độ AUTO_RED_GREEN
